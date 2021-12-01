@@ -41,4 +41,3 @@ def index_to_grid_pos(grid: List[List], index: Tuple[int, int]) -> int:
             if (row_i, col_i) == index:
                 return count
             count += 1
-
