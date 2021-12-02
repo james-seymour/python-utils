@@ -1,4 +1,4 @@
-from typing import Iterable, Iterator, Tuple
+from typing import Iterable, Iterator, List, Tuple
 
 
 def tuple_add(x: Tuple[int], y: Tuple[int]) -> Tuple[int]:
@@ -16,14 +16,17 @@ def tuple_mul(x: Tuple[int], y: Tuple[int]) -> Tuple[int]:
 def tuple_scale_mul(k: int, x: Tuple[int]) -> Tuple[int]:
     return tuple(k * xi for xi in x)
 
-def read_input(day: int):
-    with open(f"day_{day}_input.txt") as f:
+def read_input(filename: str) -> List[str]:
+    with open(filename) as f:
         return f.readlines()
 
-def parse_to_tuple(lines):
+def read_aoc_input(day: int | str) -> List[str]:
+    return read_input(f"day_{day}_input.txt")
+
+def parse_int_to_tuple(lines) -> Tuple[int]:
     return tuple(map(int, (lines)))
 
-def parse_to_list(lines):
+def parse_int_to_list(lines) -> List[int]:
     return list(map(int, (lines)))
 
 def zip_data(data: Iterable, window_size = 2) -> Iterator[Tuple]:
