@@ -22,6 +22,7 @@ def read_input(filename: str) -> List[str]:
 
 def read_aoc_input(day: int | str) -> List[str]:
     return read_input(f"day_{day}_input.txt")
+    """hello"""
 
 def parse_int_to_tuple(lines) -> Tuple[int]:
     return tuple(map(int, (lines)))
