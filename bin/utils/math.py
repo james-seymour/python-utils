@@ -4,8 +4,8 @@ from math import gcd
 from typing import Dict, Iterable, List, Tuple, TypeVar
 from re import compile
 from operator import mul
-from utils.tuple_list_util import deep_list_to_tuple
-from utils.func_util import flatten as _flatten
+from utils.tuple_list import deep_list_to_tuple
+from utils.func import flatten as _flatten
 
 T = TypeVar("T")
 
