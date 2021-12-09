@@ -1,5 +1,5 @@
 from typing import Iterable, Iterator, List, Tuple
-
+from pandas import read_excel, read_csv
 
 def tuple_add(x: Tuple[int], y: Tuple[int]) -> Tuple[int]:
     assert len(x) == len(y)
@@ -21,9 +21,9 @@ def read_input(filename: str) -> List[str]:
         return f.readlines()
 
 def read_aoc_input(day: int | str) -> List[str]:
-    return read_input(f"day_{day}_input.txt")
+    return [ line.strip() for line in read_input(f"day_{day}_input.txt") ]
 
-def parse_int_to_tuple(lines) -> Tuple[int]:
+def parse_int_tuple(lines) -> Tuple[int]:
     return tuple(map(int, (lines)))
 
 def parse_int_to_list(lines) -> List[int]:
@@ -35,3 +35,15 @@ def zip_data(data: Iterable, window_size = 2) -> Iterator[Tuple]:
     """
     windows = [ data[i:] for i in range(window_size) ]
     return zip(*windows)
+
+def load_dataframe(filename):
+    """
+    A wrapper that matches a file extension to the proper pandas read method\n
+    REQUIRES: openpyxl
+    """
+    _, extension = filename.split(".")
+    match extension:
+        case "csv":
+            return read_csv(filename)
+        case "xlsx":
+            return read_excel(filename)

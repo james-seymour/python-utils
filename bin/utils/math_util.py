@@ -2,9 +2,18 @@
 from functools import reduce, lru_cache
 from math import gcd
 from typing import Dict, Iterable, List, Tuple, TypeVar
-import re
+from re import compile
+from operator import mul
+from utils.tuple_list_util import deep_list_to_tuple
+from utils.func_util import flatten as _flatten
 
 T = TypeVar("T")
+
+def prod(a: Iterable[int | float]):
+    return reduce(mul, a) 
+
+def bin_to_int(bin: str):
+    return int(bin, 2)
 
 def lcm(a, b):
     return a * b // gcd(a, b)
@@ -21,8 +30,8 @@ def map_int(l: List[str]) -> List[int]:
 def map_float(l: List[str]) -> List[float]:
     return [float(x) for x in l]
 
-INT_REGEX = re.compile(r'-?\d+')
-UINT_REGEX = re.compile(r'\d+')
+INT_REGEX = compile(r'-?\d+')
+UINT_REGEX = compile(r'\d+')
 def find_ints(s: str) -> List[int]:
     """ Returns all instances of an integer within a string """
     return map_int(INT_REGEX.findall(s))
@@ -48,11 +57,23 @@ def digits(num, output_len=None) -> Tuple[int]:
     out.reverse()
     return tuple(out)
 
-@lru_cache()
-def count_freq(obj: Iterable[T]) -> Dict[T, int]:
+def list_to_tuple(func):
+    def wrapper(*args, **kwargs):
+        args = deep_list_to_tuple(args) # Makes the input immutable so lru_cache doesn't whine
+        result = func(*args, **kwargs)
+        return result
+    return wrapper
+
+@list_to_tuple
+@lru_cache
+def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
     """ Counts the frequency of each object in an iterable.\n
+        Optional kwarg flatten=True unpacks a multidimensional iterable to count frequency.\n 
         Make sure to define a __eq__ method to count properly
     """
+    if flatten:
+        obj = _flatten(obj)
+
     out = {}
     for x in obj:
         if x not in out: 
