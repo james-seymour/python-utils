@@ -21,11 +21,7 @@ def read_input(filename: str) -> List[str]:
         return f.readlines()
 
 def read_aoc_input(day: int | str) -> List[str]:
-<<<<<<< HEAD:bin/utils/data_util.py
-    return read_input(f"day_{day}_input.txt")
-=======
     return [ line.strip() for line in read_input(f"day_{day}_input.txt") ]
->>>>>>> 1bbe6e2edf56c093985300e250eab0f0039756ec:bin/utils/data.py
 
 def parse_int_tuple(lines) -> Tuple[int]:
     return tuple(map(int, (lines)))

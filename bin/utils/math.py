@@ -81,4 +81,12 @@ def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
         out[x] += 1
     return out
 
+def factorial(num: int) -> int:
+    """ Returns the factorial of a number"""
+    out = num
+    for i in range(0, out, -1):
+        out *= i
+    return out
+
+
 
