@@ -15,6 +15,9 @@ def prod(a: Iterable[int | float]):
 def bin_to_int(bin: str):
     return int(bin, 2)
 
+def hex_to_int(hex: str):
+    return int(bin, 16)
+
 def lcm(a, b):
     return a * b // gcd(a, b)
 
@@ -81,4 +84,17 @@ def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
         out[x] += 1
     return out
 
+def factorial(num: int) -> int:
+    """ Returns the factorial of a number"""
+    if num == 0 or num == 1:
+        return 1
+    else:
+        return num * factorial(num - 1)
 
+def sum_between_range(min: int, max: int) -> int:
+    """ Returns the sum of all integers between min and max"""
+    return ((max - min + 1) *  (max + min)) / 2
+
+def sum_to_n(n: int) -> int:
+    """ Returns the sum of all integers between 1 and n """
+    return (n * (n + 1)) / 2
