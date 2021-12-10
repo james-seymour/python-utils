@@ -4,10 +4,10 @@ from math import gcd
 from typing import Dict, Iterable, List, Tuple, TypeVar
 from re import compile
 from operator import mul
-from utils.tuple_list import deep_list_to_tuple
-from utils.func import flatten as _flatten
+from utils.builtins import flatten as _flatten
+from utils.func import immutable_args
 
-T = TypeVar("T")
+_T = TypeVar("_T")
 
 def prod(a: Iterable[int | float]):
     return reduce(mul, a) 
@@ -60,19 +60,15 @@ def digits(num, output_len=None) -> Tuple[int]:
     out.reverse()
     return tuple(out)
 
-def immutable_args(func):
-    def wrapper(*args, **kwargs):
-        args = deep_list_to_tuple(args) # Makes the input immutable so lru_cache doesn't whine
-        result = func(*args, **kwargs)
-        return result
-    return wrapper
 
+# Can uncomment this out for very big sizes
+# @lru_cache()
 @immutable_args
-@lru_cache()
-def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
+def count_freq(obj: Iterable[_T], flatten=False) -> Dict[_T, int]:
     """ Counts the frequency of each object in an iterable.\n
+        Requires a definition of __eq__ and __hash__ methods.\n
         Optional kwarg flatten=True unpacks a multidimensional iterable to count frequency.\n 
-        Make sure to define a __eq__ method to count properly
+        Recommended to define a __repr__ to easily display freqs\n
     """
     if flatten:
         obj = _flatten(obj)
@@ -84,6 +80,7 @@ def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
         out[x] += 1
     return out
 
+@lru_cache(maxsize=256)
 def factorial(num: int) -> int:
     """ Returns the factorial of a number"""
     if num == 0 or num == 1:

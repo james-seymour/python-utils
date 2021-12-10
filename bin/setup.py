@@ -10,5 +10,8 @@ setup(
    description='My Python Utils Package',
    long_description="A free util package for python. I encourage anyone to use and add anything they think would benefit!",
    install_requires=[
+      "igraph",
+      "numpy",
+      "pandas",
    ],
 )

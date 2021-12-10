@@ -1,22 +1,21 @@
 from typing import Iterator, List, Optional, Tuple
 
-
-CARDINAL_OFFSETS = {
+__CARDINAL_OFFSETS = {
     "N": (-1, 0), 
     "E": (0, 1), 
     "S": (1, 0), 
     "W": (0, -1) 
 }
 
-CARDINAL_OFFSETS_EXTENDED = dict({
+__CARDINAL_OFFSETS_EXTENDED = dict({
     "NE": (-1, 1), 
     "SE": (1, 1), 
     "SW": (1, -1), 
     "NW": (-1, -1)}, 
-    **CARDINAL_OFFSETS
+    **__CARDINAL_OFFSETS
 )
 
-def neighbours(pos: Tuple[int, int], offsets=CARDINAL_OFFSETS, grid: Optional[List[List[int]]]=None) -> Iterator[Tuple[int, int]]:
+def neighbours(pos: Tuple[int, int], offsets=__CARDINAL_OFFSETS, grid: Optional[List[List[int]]]=None) -> Iterator[Tuple[int, int]]:
     """ Gives the indices of neighbouring elements as a row, col pair\n
         Optionally give this method your grid to check return in neighbours in bounds.\n
         Can use offsets=CARDINAL_OFFSETS_EXTENDED for 8 way checking.

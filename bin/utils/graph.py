@@ -1,13 +1,18 @@
-from typing import Iterable, Tuple, Union
+from typing import Iterable, Tuple, Union, overload
 import igraph
-# from utils.func import bind_func
-
-Edge = Union[str, int]
 
 def create_graph(*args, **kwargs):
     return Graph(*args, **kwargs)
 
+
+
 class Graph:
+    Edge = str
+    Vertex = str
+    """ 
+        Graph data structure abstraction built around igraph. 
+    """
+
     def __init__(self, *args, **kwargs):
         self.g = igraph.Graph(*args, **kwargs)
 
@@ -29,16 +34,22 @@ class Graph:
     def add_vertex(self, name=None, **kwds):
         return self.g.add_vertex(name, **kwds)
 
-    def add_vertices(self, v=Iterable[Edge], attributes=None):
+    def add_vertices(self, v=Iterable[Vertex], attributes=None):
         return self.g.add_vertices(v, attributes)
 
-    def add_edge(self, source, target, auto=True, weight=None):
+    def add_edge(self, source: Vertex, target: Vertex, auto=True, weight=None):
         """
         auto=True will automatically add vertices to the graph that are not already defined (be careful)\n
         """
+        if not isinstance(source, Graph.Vertex):
+            raise ValueError("Source must be of type Vertex (str)")
+            
+        if not isinstance(target, Graph.Vertex):
+            raise ValueError("Target must be of type Vertex (str)")
+
         if not auto:
             if weight:
-                return self.g.add_edge(source, target, weight)
+                return self.g.add_edge(source, target, weight=weight)
 
             return self.g.add_edge(source, target)
 
@@ -55,23 +66,28 @@ class Graph:
 
         return self.g.add_edge(source, target, name=f"{source}-{target}")
 
-    def add_edges(self, edge_list: Iterable[Tuple[Edge, Edge]], auto=True):
+    def add_edges(self, edge_list: Iterable[Tuple[Vertex, Vertex]], auto=True):
         """
         auto=True will automatically add vertices to the graph that are not already defined (be careful)\n
+        To add weighted edges, use add_weighted_edges
         """
         return [ self.add_edge(source, target, auto=auto) for source, target in edge_list ]
 
-    def add_weighted_edges(self, weighted_edge_list: Iterable[Tuple[Edge, Edge, int | float]], auto=True):
+    def add_weighted_edges(self, weighted_edge_list: Iterable[Tuple[Vertex, Vertex, int | float]], auto=True):
         return [ self.add_edge(source, target, auto=auto, weight=weight) for source, target, weight in weighted_edge_list ]
 
+    def shortest_path(self, source: Vertex, target: Vertex):
+        """  
+        Returns the path between two edges in the graph and the total weight of that path as a (path, total_weight) pair\n
+        Add weighted edges to the graph using add_weighted_edges method
+        """
+        if source not in self.get_vertices():
+            raise ValueError("Source {source} is not a vertex in the graph.")
 
+        if target not in self.get_vertices():
+            raise ValueError("Target {target} is not a vertex in the graph.")
 
-# g = create_graph()
-# g.add_weighted_edges([("A", "RR", 22), ("G", "D", 1), ("PPP", "A", 10)])
-# print(g.get_edges())
+        path = [self.g.vs[i]["name"] for i in self.g.get_shortest_paths(source, to=target, mode=igraph.OUT, weights=self.g.es["weight"])[0]]
+        total_weight = self.g.shortest_paths(source=source, target=target, weights=self.g.es["weight"], mode=igraph.OUT)[0][0]
+        return path, total_weight
 
-# g.add_weighted_edges([("A", "B", 1)])
-
-
-# g.add_vertices(["A", "B", "C", "D", "E"], attributes={"weights": [1, 5, 2, 7, 2]})
-# g.add_edge("E", "A")

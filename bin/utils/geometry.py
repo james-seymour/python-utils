@@ -4,6 +4,7 @@ Geometry utility functions
 --------------------------
 """
 import math
+from typing import Tuple
 
 def circle_area(radius: int | float) -> float:
     """ Returns the area of a 2D circle """
@@ -41,4 +42,10 @@ def hypotenuse(a: int | float, b: int | float) -> float:
     """ Returns the hypotenuse of RA triangle using pythag """
     return (a**2 + b**2)**(1/2)
 
+def dist(p1: Tuple[int | float, int | float], p2: Tuple[int | float, int | float], type="euclidean") -> float:
+    match type:
+        case "euclidean":
+            return ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**(1/2)
 
+        case "manhattan":
+            return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])

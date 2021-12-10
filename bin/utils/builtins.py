@@ -1,4 +1,4 @@
-from typing import Iterable, Tuple
+from typing import Dict, Iterable, Tuple
 
 def tuple_add(x: Tuple[int], y: Tuple[int]) -> Tuple[int]:
     assert len(x) == len(y)
@@ -20,3 +20,13 @@ def deep_list_to_tuple(x):
  
 def deepmap(f, x):
     return [deepmap(f, a) for a in x] if isinstance(x, list) else f(x)
+
+def reverse_dict(d: Dict) -> Dict:
+    return {v: k for k, v in d.items()}
+
+def flatten(x):
+    if isinstance(x, tuple | list):
+        for a in x:
+            yield from flatten(a)
+    else:
+        yield x

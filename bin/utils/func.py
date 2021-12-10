@@ -1,3 +1,4 @@
+from utils.builtins import deep_list_to_tuple as _deep_list_to_tuple 
 
 def bind_func(instance, func, as_name=None):
     """
@@ -12,9 +13,9 @@ def bind_func(instance, func, as_name=None):
     setattr(instance, as_name, bound_method)
     return bound_method
 
-def flatten(x):
-    if isinstance(x, tuple | list):
-        for a in x:
-            yield from flatten(a)
-    else:
-        yield x
+def immutable_args(func):
+    def wrapper(*args, **kwargs):
+        args = _deep_list_to_tuple(args) # Makes the input immutable so lru_cache doesn't whine
+        result = func(*args, **kwargs)
+        return result
+    return wrapper
