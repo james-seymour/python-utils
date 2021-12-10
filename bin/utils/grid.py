@@ -7,6 +7,7 @@ CARDINAL_OFFSETS = {
     "S": (1, 0), 
     "W": (0, -1) 
 }
+
 CARDINAL_OFFSETS_EXTENDED = dict({
     "NE": (-1, 1), 
     "SE": (1, 1), 

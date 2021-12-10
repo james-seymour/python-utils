@@ -57,15 +57,15 @@ def digits(num, output_len=None) -> Tuple[int]:
     out.reverse()
     return tuple(out)
 
-def list_to_tuple(func):
+def immutable_args(func):
     def wrapper(*args, **kwargs):
         args = deep_list_to_tuple(args) # Makes the input immutable so lru_cache doesn't whine
         result = func(*args, **kwargs)
         return result
     return wrapper
 
-@list_to_tuple
-@lru_cache
+@immutable_args
+@lru_cache()
 def count_freq(obj: Iterable[T], flatten=False) -> Dict[T, int]:
     """ Counts the frequency of each object in an iterable.\n
         Optional kwarg flatten=True unpacks a multidimensional iterable to count frequency.\n 
