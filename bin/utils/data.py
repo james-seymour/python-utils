@@ -31,7 +31,8 @@ def parse_int_to_list(lines) -> List[int]:
 
 def zip_data(data: Iterable, window_size = 2) -> Iterator[Tuple]:
     """ Zips a data set into windows\n 
-        Default window size is 2, which is equivalent to pairing successive values from the data set 
+        Default window size is 2, which is equivalent to pairing successive values from the data set\n
+        For a window size of 3, successive triplets are returned instead
     """
     windows = [ data[i:] for i in range(window_size) ]
     return zip(*windows)

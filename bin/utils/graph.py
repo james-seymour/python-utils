@@ -12,7 +12,6 @@ class Graph:
     """ 
         Graph data structure abstraction built around igraph. 
     """
-
     def __init__(self, *args, **kwargs):
         self.g = igraph.Graph(*args, **kwargs)
 
