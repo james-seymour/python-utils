@@ -4,8 +4,6 @@ import igraph
 def create_graph(*args, **kwargs):
     return Graph(*args, **kwargs)
 
-
-
 class Graph:
     Edge = str
     Vertex = str

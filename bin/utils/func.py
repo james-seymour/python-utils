@@ -1,4 +1,4 @@
-from utils.builtins import deep_list_to_tuple as _deep_list_to_tuple 
+import utils.builtins
 
 def bind_func(instance, func, as_name=None):
     """
@@ -15,7 +15,7 @@ def bind_func(instance, func, as_name=None):
 
 def immutable_args(func):
     def wrapper(*args, **kwargs):
-        args = _deep_list_to_tuple(args) # Makes the input immutable so lru_cache doesn't whine
+        args = utils.builtins.deep_iter_to_tuple(args)
         result = func(*args, **kwargs)
         return result
     return wrapper

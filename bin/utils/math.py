@@ -43,26 +43,11 @@ def find_uints(s: str) -> List[int]:
     """ Returns all instances of a positive integer within a string """
     return map_int(UINT_REGEX.findall(s))
 
-@lru_cache(maxsize=None)
 def digits(num, output_len=None) -> Tuple[int]:
     """ Returns the digits of a number as a tuple """
-    out = []
-    i = 0
-    while True:
-        out.append(num % 10)
-        num //= 10
-        i += 1
-        if (output_len is not None and i >= output_len) or num == 0:
-            break
-    if output_len is not None:
-        for _ in range(output_len - i):
-            out.append(0)
-    out.reverse()
-    return tuple(out)
+    output_len = len(str(num)) if output_len is None else output_len
+    return tuple(int(i) for i in str(num)[:output_len])
 
-
-# Can uncomment this out for very big sizes
-# @lru_cache()
 @immutable_args
 def count_freq(obj: Iterable[_T], flatten=False) -> Dict[_T, int]:
     """ Counts the frequency of each object in an iterable.\n
@@ -80,13 +65,11 @@ def count_freq(obj: Iterable[_T], flatten=False) -> Dict[_T, int]:
         out[x] += 1
     return out
 
-@lru_cache(maxsize=256)
 def factorial(num: int) -> int:
     """ Returns the factorial of a number"""
     if num == 0 or num == 1:
         return 1
-    else:
-        return num * factorial(num - 1)
+    return num * factorial(num - 1)
 
 def sum_between_range(min: int, max: int) -> int:
     """ Returns the sum of all integers between min and max"""
