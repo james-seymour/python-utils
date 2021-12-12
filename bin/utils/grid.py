@@ -1,4 +1,5 @@
 from typing import Iterator, List, Optional, Tuple
+from math import ceil, floor
 
 CARDINAL_OFFSETS = {
     "N": (-1, 0), 
@@ -15,9 +16,13 @@ CARDINAL_OFFSETS_EXTENDED = dict({
     **CARDINAL_OFFSETS
 )
 
+def int_lines_to_grid(lines: List[str]):
+    """ Given a list of strings that each contain integers, return a grid of those integers """
+    return [[int(char) for char in line] for line in lines]
+
 def neighbours(pos: Tuple[int, int], grid: Optional[List[List[int]]]=None, extended=False) -> Iterator[Tuple[int, int]]:
-    """ Gives the indices of neighbouring elements as a row, col pair\n
-        Optionally give this method your grid to check return in neighbours in bounds.\n
+    """ Gives the indices of neighbouring elements as a row, col pair in a 2D grid\n
+        Optionally give this method your grid to filter all out of bounds indices.\n
         Can use extended=True to include diagonal indices.
     """
     offsets = CARDINAL_OFFSETS
@@ -52,3 +57,34 @@ def index_to_grid_pos(grid: List[List], index: Tuple[int, int]) -> int:
             if (row_i, col_i) == index:
                 return count
             count += 1
+
+def full(n_rows: int, n_cols: int, val) -> List[List[int]]:
+    return [[val for _ in range(n_cols)] for _ in range(n_rows)]
+
+def zeros(n_rows: int, n_cols: int):
+    """
+        Similar to np.zeros but returns a normal python list instead of an array.\n
+        To specify a value to fill by, use "full"\n
+    """
+    return full(n_rows, n_cols, val=0)
+
+def pack(incomplete_grid: List[List], val=0, side="right") -> List[List]:
+    """
+        Packs an incomplete 2D list (uneven row length) with a value (0 by default)\n
+        side={"left", "right", "center} determines the side from which "val" is packed from
+    """
+    assert side in {"right", "left", "center"}
+    max_col = max(*[len(row) for row in incomplete_grid])
+    return [__pack_row(row, max_col, val, side) for row in incomplete_grid]
+
+def __pack_row(row, n, val, side):
+    match side:
+        case "right":
+            return row + (n-len(row)) * [val]
+        case "left":
+            return (n-len(row)) * [val] + row
+        case "center":
+            d = (n-len(row))/2
+            l, r = floor(d), ceil(d) # left-bias
+            return l * [val] + row + r * [val]
+

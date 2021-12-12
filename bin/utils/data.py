@@ -23,13 +23,13 @@ def read_input(filename: str) -> List[str]:
 def read_aoc_input(day: int | str) -> List[str]:
     return [ line.strip() for line in read_input(f"day_{day}_input.txt") ]
 
-def parse_int_tuple(lines) -> Tuple[int]:
+def int_lines_to_tuple(lines) -> Tuple[int]:
     return tuple(map(int, (lines)))
 
-def parse_int_to_list(lines) -> List[int]:
+def int_lines_to_list(lines) -> List[int]:
     return list(map(int, (lines)))
 
-def zip_data(data: Iterable, window_size = 2) -> Iterator[Tuple]:
+def window_zip(data: Iterable, window_size = 2) -> Iterator[Tuple]:
     """ Zips a data set into windows\n 
         Default window size is 2, which is equivalent to pairing successive values from the data set\n
         For a window size of 3, successive triplets are yielded instead
